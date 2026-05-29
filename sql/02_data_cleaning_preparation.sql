@@ -26,7 +26,14 @@ SELECT
     "CUST_ID" AS customer_id,
     gender,
     "DateOfBirth" AS date_of_birth_raw,
-    TO_DATE("DateOfBirth", 'DD-Mon-YY') AS date_of_birth,
+        
+    CASE 
+    	WHEN TO_DATE("DateOfBirth", 'DD-Mon-YY') > CURRENT_DATE 
+    	THEN TO_DATE("DateOfBirth", 'DD-Mon-YY') - INTERVAL '100 years'
+    	ELSE TO_DATE("DateOfBirth", 'DD-Mon-YY')
+    END::date AS date_of_birth,
+    
+ 
     "State" AS state,
     "Contact" AS contact,
     "Segment" AS segment
