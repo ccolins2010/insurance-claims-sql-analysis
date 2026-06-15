@@ -1,22 +1,29 @@
 # Analyse de sinistres d’assurance avec SQL & Power BI
 
-## Présentation du projet
+## Résumé exécutif
 
-Ce projet analyse un portefeuille de sinistres d’assurance à l’aide de SQL et Power BI.
+Ce projet analyse un portefeuille de **1 100 sinistres d’assurance** à l’aide de **PostgreSQL** et **Power BI**.
 
-L’objectif est de transformer des données brutes en données propres, fiables et exploitables afin de produire des indicateurs métier clairs. Le projet couvre l’exploration des données, le nettoyage, la création de vues SQL propres, l’analyse des KPI, l’analyse métier et la construction d’un dashboard Power BI.
+L’objectif est de transformer des données brutes en données propres, fiables et exploitables afin de produire un tableau de bord permettant de suivre les principaux indicateurs métier : volume de sinistres, exposition financière, fraude, qualité des données et tendances mensuelles.
 
-L’analyse porte principalement sur :
+### Résultats clés
 
-- le volume de sinistres ;
-- les montants des sinistres ;
-- les types de sinistres ;
-- les indicateurs de fraude ;
-- les profils clients ;
-- les problèmes de qualité des données ;
-- les tendances mensuelles.
+| Indicateur | Résultat |
+|---|---:|
+| Nombre total de sinistres | 1 100 |
+| Sinistres avec montant exploitable | 1 035 |
+| Sinistres sans montant exploitable | 65 |
+| Taux de sinistres sans montant exploitable | 5,91 % |
+| Montant total des sinistres | 12,88M |
+| Montant moyen d’un sinistre | 12,44K |
+| Sinistres frauduleux | 254 |
+| Taux global de fraude | 23,09 % |
+| Rapports de police inconnus | 300 |
+| Taux de rapports de police inconnus | 27,27 % |
+| Sinistres sans client correspondant | 15 |
+| Taux de sinistres sans client correspondant | 1,36 % |
 
-Le dashboard Power BI final permet de visualiser rapidement les principaux indicateurs du portefeuille : volume, coûts, fraude, qualité des données et évolution dans le temps.
+Le dashboard final permet d’identifier les principaux moteurs de coût, les types de sinistres les plus exposés à la fraude, ainsi que les limites de qualité des données à prendre en compte dans l’analyse.
 
 ---
 
@@ -30,7 +37,7 @@ Le projet répond notamment aux questions suivantes :
 - Quel est le montant total et moyen des sinistres ?
 - Quels types de sinistres génèrent le plus de coûts ?
 - Quels types de sinistres sont les plus associés à la fraude ?
-- La fraude est-elle fréquente dans le portefeuille ?
+- Quelle est la fréquence des sinistres frauduleux dans le portefeuille ?
 - Existe-t-il des données manquantes ou peu fiables ?
 - Comment évoluent le volume de sinistres, les montants et le taux de fraude dans le temps ?
 - L’historique disponible est-il suffisant pour réaliser une prévision fiable ?
@@ -73,6 +80,8 @@ Les fichiers nettoyés utilisés dans Power BI sont :
 claims_clean.csv
 customers_clean.csv
 ```
+
+> Remarque : ce projet est un projet portfolio à visée pédagogique. Les résultats dépendent du jeu de données fourni et ne doivent pas être interprétés comme des conclusions générales sur le secteur de l’assurance.
 
 ---
 
@@ -123,26 +132,56 @@ insurance-claims-sql-powerbi-analysis/
 
 ---
 
+## Dictionnaire simplifié des données
+
+### Table `claims`
+
+| Colonne | Description |
+|---|---|
+| `claim_id` | Identifiant du sinistre |
+| `customer_id` | Identifiant du client lié au sinistre |
+| `incident_cause` | Cause de l’incident |
+| `claim_date` | Date du sinistre |
+| `claim_area` | Zone du sinistre |
+| `police_report` | Statut du rapport de police |
+| `claim_type` | Type de sinistre |
+| `claim_amount` | Montant du sinistre |
+| `total_policy_claims` | Nombre total de sinistres liés à la police |
+| `fraudulent` | Indicateur de fraude dans les données brutes |
+
+### Table `customers`
+
+| Colonne | Description |
+|---|---|
+| `customer_id` | Identifiant du client |
+| `gender` | Genre du client |
+| `date_of_birth` | Date de naissance du client |
+| `state` | État ou zone géographique |
+| `contact` | Contact présent dans le dataset |
+| `segment` | Segment client |
+
+---
+
 ## Démarche du projet
 
 Le projet suit une démarche complète de Data Analyst :
 
-1. Exploration des données avec SQL
-2. Nettoyage et préparation des données
-3. Création de vues SQL propres
-4. Calcul des KPI principaux
-5. Analyse métier
-6. Export des données nettoyées au format CSV
-7. Modélisation des données dans Power BI
-8. Création de mesures DAX
-9. Construction d’un dashboard Power BI multi-pages
-10. Synthèse des résultats et limites de l’analyse
+1. Exploration des données avec SQL.
+2. Nettoyage et préparation des données.
+3. Création de vues SQL propres.
+4. Calcul des principaux KPI.
+5. Analyse métier.
+6. Export des données nettoyées au format CSV.
+7. Modélisation des données dans Power BI.
+8. Création de mesures DAX.
+9. Construction d’un dashboard Power BI multi-pages.
+10. Synthèse des résultats, recommandations et limites de l’analyse.
 
 ---
 
 ## Analyse SQL
 
-### 01_data_exploration.sql
+### `01_data_exploration.sql`
 
 Ce fichier contient l’exploration initiale des données brutes.
 
@@ -160,7 +199,7 @@ Il comprend notamment :
 
 ---
 
-### 02_data_cleaning_preparation.sql
+### `02_data_cleaning_preparation.sql`
 
 Ce fichier contient le nettoyage et la préparation des données.
 
@@ -171,11 +210,11 @@ Il comprend notamment :
 - la transformation des dates ;
 - le nettoyage des données clients et sinistres ;
 - la création de vues SQL propres ;
-- la préparation de `vw_claims_clean` et `vw_customers_clean`.
+- la préparation des vues `vw_claims_clean` et `vw_customers_clean`.
 
 ---
 
-### 03_kpi_analysis.sql
+### `03_kpi_analysis.sql`
 
 Ce fichier contient le calcul des principaux KPI.
 
@@ -193,7 +232,7 @@ Il comprend notamment :
 
 ---
 
-### 04_business_insights.sql
+### `04_business_insights.sql`
 
 Ce fichier contient l’analyse métier complète.
 
@@ -264,7 +303,8 @@ Le dashboard inclut :
 - des graphiques en barres ;
 - des graphiques en lignes ;
 - une navigation entre les pages ;
-- des tooltips enrichis avec des mesures de time intelligence.
+- des tooltips enrichis avec des mesures de time intelligence ;
+- une mise en forme homogène pour faciliter la lecture des indicateurs.
 
 ---
 
@@ -289,7 +329,7 @@ Elle présente :
 
 ### 2. Claim Types
 
-Cette page analyse les sinistres par type de sinistre.
+Cette page analyse les sinistres par type.
 
 Elle présente :
 
@@ -411,7 +451,7 @@ Le rapport Power BI contient plusieurs mesures DAX regroupées par type d’anal
 - Fraud Rate Variation Points
 - Fraud Rate Variation Relative
 
-Ces mesures permettent au dashboard de présenter non seulement des KPI statiques, mais aussi des évolutions mensuelles et des variations par rapport au mois précédent.
+Ces mesures permettent au dashboard de présenter à la fois des KPI statiques, des évolutions mensuelles et des variations par rapport au mois précédent.
 
 ---
 
@@ -455,9 +495,26 @@ Les sinistres frauduleux sont moins nombreux que les sinistres non frauduleux, m
 
 Les sinistres `Material only` représentent le volume le plus important.
 
-Cependant, les sinistres `Material and injury` génèrent le montant total le plus élevé ainsi que le taux de fraude le plus important.
+En revanche, les sinistres `Material and injury` génèrent le montant total le plus élevé ainsi que le taux de fraude le plus important.
 
-Cela montre que les sinistres impliquant des blessures ont un impact financier beaucoup plus élevé.
+Cela montre que les sinistres impliquant des blessures représentent un risque financier plus élevé et méritent une attention particulière.
+
+---
+
+### Résultats complémentaires issus de l’analyse SQL
+
+L’analyse SQL détaillée apporte plusieurs enseignements supplémentaires :
+
+- les sinistres `Auto` représentent **985 sinistres sur 1 100** et génèrent **11,71M** de montant total ;
+- les sinistres `Home` représentent **115 sinistres** et génèrent **1,17M** de montant total ;
+- les causes `Other causes`, `Other driver error` et `Driver error` concentrent la majorité du coût total des sinistres ;
+- les sinistres sans rapport de police renseigné comme `No` sont les plus nombreux, tandis que les valeurs `Unknown` sur `police_report` doivent être traitées comme une limite de qualité des données ;
+- les analyses par profil client montrent des différences par segment, genre, État et tranche d’âge, mais ces résultats doivent être interprétés avec prudence lorsque les volumes sont faibles ;
+- la tranche d’âge `Under 30` génère le coût total le plus élevé, principalement en raison d’un volume de sinistres plus important ;
+- la tranche d’âge `50 - 59` présente le taux de fraude le plus élevé dans l’analyse SQL détaillée ;
+- certains clients apparaissent plusieurs fois dans le portefeuille, ce qui permet d’identifier des profils récurrents ou à fort impact financier.
+
+Ces résultats complètent le dashboard Power BI et montrent que le projet ne se limite pas à des KPI globaux : il inclut aussi une lecture métier par type de sinistre, cause d’incident, profil client, période et qualité des données.
 
 ---
 
@@ -468,10 +525,12 @@ Les données sont exploitables pour l’analyse, mais certaines limites doivent 
 Les principaux problèmes de qualité des données sont :
 
 - **65 sinistres** sans montant exploitable ;
+- **15 sinistres** sans client correspondant dans la table clients ;
 - **300 sinistres** avec un statut de rapport de police inconnu ;
-- un taux de rapports de police inconnus de **27,27 %**.
+- un taux de rapports de police inconnus de **27,27 %** ;
+- **10 valeurs non exploitables** sur `total_policy_claims` après conversion.
 
-La colonne `police_report` doit donc être interprétée avec prudence.
+La colonne `police_report` doit donc être interprétée avec prudence, et les 15 sinistres sans client correspondant ne peuvent pas être utilisés dans les analyses par segment, genre, État ou tranche d’âge.
 
 ---
 
@@ -481,17 +540,31 @@ Les tendances mensuelles montrent des variations du volume de sinistres, du mont
 
 Certains mois présentent une exposition financière plus élevée ou un taux de fraude plus important, ce qui peut aider à identifier des périodes nécessitant une surveillance renforcée.
 
+L’analyse SQL montre aussi que le volume et le coût total des sinistres diminuent entre **2017** et **2018**, tandis que le montant moyen par sinistre augmente légèrement. Cette différence montre qu’un portefeuille peut devenir moins volumineux mais rester risqué si les sinistres moyens deviennent plus coûteux.
+
 ---
 
 ## Recommandations métier
 
 À partir de l’analyse, plusieurs recommandations peuvent être formulées :
 
-1. Surveiller en priorité les sinistres impliquant des blessures, car ils génèrent l’exposition financière la plus élevée.
-2. Approfondir l’analyse de la fraude, notamment pour les types de sinistres présentant les taux de fraude les plus élevés.
-3. Améliorer la qualité des données, en particulier sur les montants manquants et les rapports de police inconnus.
-4. Suivre les tendances mensuelles afin d’identifier les périodes avec des coûts ou taux de fraude anormalement élevés.
-5. Utiliser le dashboard comme outil de suivi du volume de sinistres, de l’exposition financière, de la fraude et de la qualité des données.
+1. **Prioriser le suivi des sinistres impliquant des blessures**  
+   Les sinistres `Material and injury` génèrent l’exposition financière la plus élevée et présentent un taux de fraude important.
+
+2. **Renforcer l’analyse de la fraude**  
+   Les types de sinistres avec les taux de fraude les plus élevés doivent être analysés plus finement afin d’identifier d’éventuels profils ou comportements à risque.
+
+3. **Améliorer la qualité des données**  
+   Les montants manquants et les rapports de police inconnus réduisent la fiabilité de certaines analyses. Ces champs doivent être mieux contrôlés lors de la collecte ou de la saisie des données.
+
+4. **Mettre en place un suivi mensuel des indicateurs**  
+   Le suivi du volume de sinistres, du montant total et du taux de fraude permet d’identifier rapidement les périodes atypiques.
+
+5. **Utiliser le dashboard comme outil de pilotage**  
+   Le rapport Power BI peut servir de base pour suivre l’évolution du portefeuille, prioriser les contrôles et orienter les actions métier.
+
+6. **Exploiter les analyses par profil avec prudence**  
+   Les analyses par segment, genre, État et tranche d’âge peuvent aider à orienter les contrôles, mais elles doivent rester prudentes lorsque les volumes sont limités ou lorsque des sinistres ne sont pas reliés à un client connu.
 
 ---
 
@@ -499,15 +572,24 @@ Certains mois présentent une exposition financière plus élevée ou un taux de
 
 Ce dashboard est centré sur une analyse descriptive et diagnostique.
 
-Aucune prévision n’a été intégrée, car l’historique disponible est limité. Un modèle de prédiction fiable nécessiterait une approche dédiée de validation temporelle.
+Aucune prévision n’a été intégrée, car l’historique disponible est limité. Un modèle de prédiction fiable nécessiterait une approche dédiée, avec davantage de données et une validation temporelle rigoureuse.
 
 Le jeu de données couvre une période historique limitée, ce qui réduit la fiabilité d’une prévision long terme ou d’un modèle prédictif.
 
 La colonne `police_report` contient également un nombre important de valeurs `Unknown`. Les analyses basées sur cette colonne doivent donc être interprétées avec prudence.
 
+Enfin, **15 sinistres** ne sont pas reliés à un client connu dans la table `customers`. Ces lignes restent exploitables pour les analyses globales de volume, de coût et de fraude, mais elles ne doivent pas être utilisées pour tirer des conclusions sur les profils clients.
+
 ---
 
 ## Comment ouvrir le projet
+
+### Prérequis
+
+- PostgreSQL installé
+- DBeaver ou un autre client SQL
+- Power BI Desktop
+- Git
 
 ### Analyse SQL
 
@@ -532,8 +614,6 @@ sql/04_business_insights.sql
 ```text
 data/processed/
 ```
-
----
 
 ### Dashboard Power BI
 
@@ -595,6 +675,7 @@ data/processed/customers_clean.csv
 - Évaluation de la qualité des données
 - Analyse temporelle
 - Reporting de portefeuille
+- Synthèse et recommandations métier
 
 ---
 
@@ -604,8 +685,14 @@ Ce projet montre comment SQL et Power BI peuvent être utilisés ensemble pour t
 
 SQL a été utilisé pour explorer, nettoyer, préparer et analyser les données.
 
-Power BI a été utilisé pour construire un dashboard clair et interactif centré sur le volume de sinistres, l’exposition financière, les indicateurs de fraude, la qualité des données et les tendances mensuelles.
+Power BI a été utilisé pour construire un dashboard clair et structuré, centré sur le volume de sinistres, l’exposition financière, les indicateurs de fraude, la qualité des données et les tendances mensuelles.
 
 Le projet met en évidence les principaux moteurs de coût, les comportements liés à la fraude, les limites de qualité des données et les risques métier du portefeuille de sinistres.
+
+Les trois axes de surveillance prioritaires sont :
+
+1. les sinistres `Auto` et les sinistres impliquant des blessures ;
+2. les sinistres frauduleux, qui représentent près d’un quart du portefeuille ;
+3. les périodes et profils générant des coûts ou taux de fraude élevés.
 
 Il constitue un projet complet de portfolio Data Analyst combinant SQL, Power BI, DAX, nettoyage de données, analyse de KPI et storytelling métier.
