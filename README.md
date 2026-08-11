@@ -179,111 +179,6 @@ Le projet suit une démarche complète de Data Analyst :
 
 ---
 
-## Analyse SQL
-
-### `01_data_exploration.sql`
-
-Ce fichier contient l’exploration initiale des données brutes.
-
-Il comprend notamment :
-
-- le volume de lignes ;
-- l’inspection des colonnes ;
-- l’affichage des premières lignes ;
-- l’analyse des valeurs manquantes ;
-- la recherche de doublons ;
-- l’analyse des valeurs uniques ;
-- la vérification des formats de dates ;
-- la vérification de la cohérence des données ;
-- la vérification des relations entre les sinistres et les clients.
-
----
-
-### `02_data_cleaning_preparation.sql`
-
-Ce fichier contient le nettoyage et la préparation des données.
-
-Il comprend notamment :
-
-- la standardisation de certaines valeurs ;
-- la transformation des montants non exploitables en `NULL` ;
-- la transformation des dates ;
-- le nettoyage des données clients et sinistres ;
-- la création de vues SQL propres ;
-- la préparation des vues `vw_claims_clean` et `vw_customers_clean`.
-
----
-
-### `03_kpi_analysis.sql`
-
-Ce fichier contient le calcul des principaux KPI.
-
-Il comprend notamment :
-
-- le nombre total de sinistres ;
-- le nombre de sinistres avec montant exploitable ;
-- le nombre de sinistres sans montant exploitable ;
-- le montant total des sinistres ;
-- le montant moyen, minimum et maximum des sinistres ;
-- le nombre de sinistres frauduleux ;
-- le taux global de fraude ;
-- les KPI par type de sinistre ;
-- les premiers indicateurs de qualité des données.
-
----
-
-### `04_business_insights.sql`
-
-Ce fichier contient l’analyse métier complète.
-
-Il comprend notamment :
-
-- la vue d’ensemble du portefeuille ;
-- l’analyse des coûts ;
-- l’analyse de la fraude ;
-- l’analyse des profils clients ;
-- l’analyse temporelle ;
-- l’analyse de la qualité des données ;
-- les recommandations métier finales.
-
----
-
-## Captures SQL
-
-### Vue d’ensemble du portefeuille
-
-![Portfolio Overview](screenshots/sql/01_portfolio_overview.png)
-
-### Coût par type de sinistre
-
-![Cost by Claim Type](screenshots/sql/02_cost_by_claim_type.png)
-
-### Vue d’ensemble de la fraude
-
-![Fraud Overview](screenshots/sql/03_fraud_overview.png)
-
-### Fraude par type de sinistre
-
-![Fraud by Claim Type](screenshots/sql/04_fraud_by_claim_type.png)
-
-### Coût par segment client
-
-![Cost by Customer Segment](screenshots/sql/05_cost_by_customer_segment.png)
-
-### Mois les plus coûteux
-
-![Most Expensive Months](screenshots/sql/06_most_expensive_months.png)
-
-### Qualité des données : montants manquants
-
-![Data Quality Missing Amount](screenshots/sql/07_data_quality_missing_amount.png)
-
-### Distribution des rapports de police
-
-![Police Report Distribution](screenshots/sql/08_police_report_distribution.png)
-
----
-
 ## Dashboard Power BI
 
 Le dashboard Power BI a été construit à partir des données nettoyées exportées depuis SQL.
@@ -454,6 +349,120 @@ Le rapport Power BI contient plusieurs mesures DAX regroupées par type d’anal
 Ces mesures permettent au dashboard de présenter à la fois des KPI statiques, des évolutions mensuelles et des variations par rapport au mois précédent.
 
 ---
+
+## Analyse SQL
+
+### `01_data_exploration.sql`
+
+Ce fichier contient l’exploration initiale des données brutes.
+
+Il comprend notamment :
+
+- le volume de lignes ;
+- l’inspection des colonnes ;
+- l’affichage des premières lignes ;
+- l’analyse des valeurs manquantes ;
+- la recherche de doublons ;
+- l’analyse des valeurs uniques ;
+- la vérification des formats de dates ;
+- la vérification de la cohérence des données ;
+- la vérification des relations entre les sinistres et les clients.
+
+---
+
+### `02_data_cleaning_preparation.sql`
+
+Ce fichier contient le nettoyage et la préparation des données.
+
+Il comprend notamment :
+
+- la standardisation de certaines valeurs ;
+- la transformation des montants non exploitables en `NULL` ;
+- la transformation des dates ;
+- le nettoyage des données clients et sinistres ;
+- la création de vues SQL propres ;
+- la préparation des vues `vw_claims_clean` et `vw_customers_clean`.
+
+---
+
+### `03_kpi_analysis.sql`
+
+Ce fichier contient le calcul des principaux KPI.
+
+Il comprend notamment :
+
+- le nombre total de sinistres ;
+- le nombre de sinistres avec montant exploitable ;
+- le nombre de sinistres sans montant exploitable ;
+- le montant total des sinistres ;
+- le montant moyen, minimum et maximum des sinistres ;
+- le nombre de sinistres frauduleux ;
+- le taux global de fraude ;
+- les KPI par type de sinistre ;
+- les premiers indicateurs de qualité des données.
+
+---
+
+### `04_business_insights.sql`
+
+Ce fichier contient l’analyse métier complète.
+
+Il comprend notamment :
+
+- la vue d’ensemble du portefeuille ;
+- l’analyse des coûts ;
+- l’analyse de la fraude ;
+- l’analyse des profils clients ;
+- l’analyse temporelle ;
+- l’analyse de la qualité des données ;
+- les recommandations métier finales.
+
+---
+
+## Captures SQL
+
+<details>
+<summary><strong>Voir les captures des analyses SQL</strong></summary>
+
+<br>
+
+### Vue d’ensemble du portefeuille
+
+![Portfolio Overview](screenshots/sql/01_portfolio_overview.png)
+
+### Coût par type de sinistre
+
+![Cost by Claim Type](screenshots/sql/02_cost_by_claim_type.png)
+
+### Vue d’ensemble de la fraude
+
+![Fraud Overview](screenshots/sql/03_fraud_overview.png)
+
+### Fraude par type de sinistre
+
+![Fraud by Claim Type](screenshots/sql/04_fraud_by_claim_type.png)
+
+### Coût par segment client
+
+![Cost by Customer Segment](screenshots/sql/05_cost_by_customer_segment.png)
+
+### Mois les plus coûteux
+
+![Most Expensive Months](screenshots/sql/06_most_expensive_months.png)
+
+### Qualité des données : montants manquants
+
+![Data Quality Missing Amount](screenshots/sql/07_data_quality_missing_amount.png)
+
+### Distribution des rapports de police
+
+![Police Report Distribution](screenshots/sql/08_police_report_distribution.png)
+
+</details>
+
+---
+
+
 
 ## Principaux résultats
 
